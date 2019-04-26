@@ -1,0 +1,14 @@
+Aluno
+> Método atualizar aluno
+
+Disciplina
+> Passar disciplina para ArrayList
+> Criar CRUD disciplina
+> Método para buscar todas as disciplinas associadas aos alunos
+
+Cadastro
+> Tratamento de inteiros
+> Tratamento de nota para double
+
+Interface
+> Criar interface gráfica
