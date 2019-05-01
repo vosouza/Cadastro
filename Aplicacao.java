@@ -11,7 +11,7 @@ public class Aplicacao {
 
         CadastroAluno cadastroAluno = new CadastroAluno();
         //CadastroDisciplina cadastroDisciplina = new CadastroDisciplina();
-        IEntrada ent = new EntradaGui();
+        IEntrada ent = new EntradaSwing();
 
         do {
             op = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção:\n" +
