@@ -15,8 +15,10 @@ import javax.swing.JTextField;
 public class EntradaSwing extends JFrame implements ActionListener, IEntrada {
 	
 	private Aluno aluno;
+	private Disciplina disc;
 	
     private JButton ok;
+    private JButton ok2;
     
     private JTextField txtNome;
     private JTextField txtIdade;
@@ -74,93 +76,158 @@ public class EntradaSwing extends JFrame implements ActionListener, IEntrada {
 		
 	}
 	
-	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource() == ok) {
-			getDadosAluno(this.aluno);			
-		}
-		
-	}
-
-
 	public void lerDados(Aluno aluno) {
+		this.aluno = null;
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.aluno = aluno;
-		
+		while(this.aluno == null) {
+			aluno = this.aluno;
+		}
+		setVisible(false);	
+		dispose();
 		
 	}
 
+	private void painelDisc() {
+		setSize(400, 400);
+		cp = getContentPane();
+		cp.setLayout(new GridLayout(6,6));
+		
+		cp.add(new JLabel("Forneca da disciplina:", JLabel.LEFT));
+        txtNome = new JTextField();
+        txtNome.addActionListener(this);
+        txtNome.setToolTipText("Caracteres a-z");
+        txtNome.setBackground(Color.WHITE);
+        cp.add(txtNome);
+        
+        cp.add(new JLabel("Forneca o nome do professor:", JLabel.LEFT));
+        txtIdade = new JTextField();
+        txtIdade.addActionListener(this);
+        txtIdade.setToolTipText("Numero inteiro");
+        txtIdade.setBackground(Color.WHITE);
+        cp.add(txtIdade);
+        
+        cp.add(new JLabel("Forneca a nota:", JLabel.LEFT));
+        txtRg = new JTextField();
+        txtRg.addActionListener(this);
+        txtRg.setToolTipText("RG sem sem pontuacao");
+        txtRg.setBackground(Color.WHITE);
+        cp.add(txtRg);        
+        
+        cp.add(ok2 = new JButton("Salvar"));
+        ok2.addActionListener(this);
+        ok2.setToolTipText("aperte para cadastrar");
+	}
+	
 	@Override
 	public void lerDadosDisc(Disciplina disc) {
 		// TODO Auto-generated method stub
+		painelDisc();
+		this.aluno = null;
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		while(this.aluno == null) {
+			disc = this.disc;
+		}
+		setVisible(false);	
+		dispose();
 	}
 	
+	public void getDadosDisc() {
+		String nomeDisc, nomeProf;
+    	int nota;
+    	try {
+			nomeDisc = txtNome.getText();
+			if (nomeDisc.matches("[a-zA-Z\\s]+")){
+				disc.setDisciplina(nomeDisc);
+				
+			}
+			if (!nomeDisc.matches("[a-zA-Z\\s]+")){
+				JOptionPane.showMessageDialog(null, "Nome com formatação errada. Por favor, verifique-o novamente.");      
+			}
+
+
+			nomeProf = txtIdade.getText();
+			if (nomeProf.matches("[a-zA-Z\\s]+")){
+				disc.setProf(nomeProf);
+			}
+			if (!nomeProf.matches("[a-zA-Z\\s]+")){
+				JOptionPane.showMessageDialog(null, "Nome com formatação errada. Por favor, verifique-o novamente.");      
+			}
+		
+
+			nota = (Integer.parseInt(txtRg.getText()));
+			if (nota >= 0 && nota <= 10){
+				disc.setNota(nota);
+			}
+			if (nota < 0 || nota > 10){ 
+				JOptionPane.showMessageDialog(null, "A nota precisa ser um número inteiro e estar entre 0 e 10. Por favor, verifique-o novamente.");        
+			}
+    	}catch(Exception e) {
+    		JOptionPane.showMessageDialog(null, "Algo de errado nao esta certo"); 
+    	}
+
+}
+		
 	public void getDadosAluno(Aluno aluno) {
 		String nome, rg, ra;
 		int idade, semestre;
-		boolean infoValid = false; 
-
-		while(infoValid == false){
+		
+		try {
+			aluno = new Aluno();
 			nome = txtNome.getText();
 			if (nome.matches("[a-zA-Z\\s]+")){
 				aluno.setNome(nome);
-				infoValid = true;
 			}
 			if (!nome.matches("[a-zA-Z\\s]+")){
 				JOptionPane.showMessageDialog(null, "Nome com formatacao errada. Por favor, verifique-o novamente.");      
 			}
-		}
-		infoValid = false;
 
-		while(infoValid == false){
 			idade = Integer.parseInt(txtIdade.getText());
 			if (idade >= 5 && idade <= 99){
 				aluno.setIdade(idade);
-				infoValid = true;
 			}
 			if (idade < 5 || idade > 99){
 				JOptionPane.showMessageDialog(null, "Idade precisa ser um numero inteiro e o aluno precisa ter mais que 5 anos. Por favor, verifique-a novamente.");
 			}
-		}
-		infoValid = false;
-
-		while(infoValid == false){
-			rg = txtRg.getSelectedText();
-			if (rg.matches("[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{1}")){
+		
+			rg = txtRg.getText();
+//			if (rg.matches("[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{1}")){
 				aluno.setRg(rg);
-				infoValid = true;
-			}
+//			}
 			if (!rg.matches("[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{1}")){
 				JOptionPane.showMessageDialog(null, "RG com formatação errada. Por favor, verifique-o novamente.");        
 			}
-		}
-		infoValid = false;
-
-		while(infoValid == false){
+		
 			ra = txtRa.getText();
-			if (ra.matches("[0-9]{8}")){
+//			if (ra.matches("[0-9]{8}")){
 					aluno.setRa(ra);
-					infoValid = true;
-			}
+//			}
 			if (!ra.matches("[0-9]{8}")){
 				JOptionPane.showMessageDialog(null, "RA com formatação errada. Por favor, verifique-o novamente.");        
 			}
-		}
-		infoValid = false;
-
-		while(infoValid == false){
+		
 			semestre = (Integer.parseInt(txtSemestre.getText()));
-			if (semestre >= 1 && semestre <= 8){
+//			if (semestre >= 1 && semestre <= 8){
 				aluno.setSemestre(semestre);
-				infoValid = true;
-			}
+//			}
 			if (semestre < 1 || semestre > 8){ 
 				JOptionPane.showMessageDialog(null, "Semestre precisa ser um número inteiro e estar entre 1 e 8. Por favor, verifique-o novamente.");        
 			}
+		}catch(Exception e) {
+			JOptionPane.showMessageDialog(null, e);
 		}
-		infoValid = false;
+		
 	}
 	
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource() == ok) {
+			getDadosAluno(this.aluno);
+		}else if(arg0.getSource() == ok2) {
+			getDadosDisc();
+		}
+
+	}
+
+
 }
